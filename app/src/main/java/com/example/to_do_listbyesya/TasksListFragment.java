@@ -3,6 +3,8 @@ package com.example.to_do_listbyesya;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -68,8 +70,8 @@ public class TasksListFragment extends Fragment {
 
     RecyclerView tasks;
     RecyclerViewAdapter adapter;
-    private List<Task> tasks_list;
     View inflatedView;
+    MainActivityViewModel model;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         inflatedView = inflater.inflate(R.layout.fragment_tasks_list, container, false);
@@ -82,15 +84,24 @@ public class TasksListFragment extends Fragment {
             }
         });
 
+        model = new ViewModelProvider(getActivity()).get(MainActivityViewModel.class);
+        if(model.get_all_tasks().isEmpty()==true) {          //Начальная инициализация данных
+            model.add_task(new Task("Доделать To-Do-List", "Не, ну почему бы и не доделать, правда?)", ""));
+            model.add_task(new Task("Протестировать описание", "Тестим описание", ""));
+            model.add_task(new Task("Протестировать тестирование", "Тестим тестирование", ""));
+            model.add_task(new Task("Протестировать очень супер длинное название задачи", "Тестим... дальше лень писать", ""));
+        }
+//        model.task_liveData.observe(this.getViewLifecycleOwner(), new Observer<Task>() {
+//            @Override
+//            public void onChanged(Task task) {
+//
+//            }
+//        });
+
         tasks = (RecyclerView) inflatedView.findViewById(R.id.tasks_recycler_view);
 
-        tasks_list = new ArrayList<Task>();
-        tasks_list.add(new Task("Доделать To-Do-List", "Не, ну почему бы и не доделать, правда?)", ""));
-        tasks_list.add(new Task("Протестировать описание", "Тестим описание", ""));
-        tasks_list.add(new Task("Протестировать тестирование", "Тестим тестирование", ""));
-        tasks_list.add(new Task("Протестировать очень супер длинное название задачи", "Тестим... дальше лень писать", ""));
         tasks.setLayoutManager(new LinearLayoutManager(inflatedView.getContext()));
-        adapter = new RecyclerViewAdapter(inflatedView.getContext(), tasks_list);
+        adapter = new RecyclerViewAdapter(inflatedView.getContext(), model.get_all_tasks());
         adapter.setClickListener(this::onItemClick);
         tasks.addItemDecoration(new RecyclerViewAdapter.SpacesItemDecoration(20));
         tasks.setAdapter(adapter);
@@ -100,6 +111,9 @@ public class TasksListFragment extends Fragment {
     }
 
     public void onItemClick(View view, int position) {
+//        model.add_task(2, new Task("Test", "test", ""));
+//        adapter.notifyItemInserted(2);
+        model.select_task(position);
         NavHostFragment.findNavController(TasksListFragment.this).navigate(R.id.showTaskFragment);
     }
 

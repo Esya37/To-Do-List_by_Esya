@@ -3,10 +3,18 @@ package com.example.to_do_listbyesya;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +63,35 @@ public class AddTaskFragment extends Fragment {
         }
     }
 
+    MainActivityViewModel model;
+    EditText name_editText;
+    EditText description_editText;
+    View inflatedView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        model = new ViewModelProvider(getActivity()).get(MainActivityViewModel.class);
+
+        inflatedView = inflater.inflate(R.layout.fragment_add_task, container, false);
+        name_editText = inflatedView.findViewById(R.id.name_editText);
+        description_editText = inflatedView.findViewById(R.id.description_editText);
+        name_editText.setText("");
+        description_editText.setText("");
+
+        //TODO: Сделать проверку пустые поля или нет
+        Button confirm_button = (Button) inflatedView.findViewById(R.id.confirm_button);
+        confirm_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Task new_task = new Task((String)name_editText.getText().toString(), (String)description_editText.getText().toString(), "");
+                model.add_task(new_task);
+                //NavHostFragment.findNavController(AddTaskFragment.this).navigate(R.id.tasksListFragment);
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                fm.popBackStack();
+            }
+        });
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_task, container, false);
+        return inflatedView;
     }
 }

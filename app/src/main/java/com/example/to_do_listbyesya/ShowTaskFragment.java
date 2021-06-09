@@ -3,10 +3,14 @@ package com.example.to_do_listbyesya;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +59,30 @@ public class ShowTaskFragment extends Fragment {
         }
     }
 
+    MainActivityViewModel model;
+    TextView name_textView;
+    TextView description_textView;
+    View inflatedView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        model = new ViewModelProvider(getActivity()).get(MainActivityViewModel.class);
+
+        inflatedView = inflater.inflate(R.layout.fragment_show_task, container, false);
+        name_textView = inflatedView.findViewById(R.id.name_textView);
+        description_textView = inflatedView.findViewById(R.id.description_textView);
+
+        LiveData<Task> task_livedata = model.get_selected_task();
+        task_livedata.observe(this.getViewLifecycleOwner(), new Observer<Task>() {
+            @Override
+            public void onChanged(Task task) {
+                name_textView.setText(task.get_name());
+                description_textView.setText((task.get_description()));
+            }
+        });
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_show_task, container, false);
+        return inflatedView;
     }
 }
