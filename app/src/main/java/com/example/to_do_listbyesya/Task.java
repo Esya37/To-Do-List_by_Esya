@@ -1,15 +1,19 @@
 package com.example.to_do_listbyesya;
 
+import android.net.Uri;
+
+import com.google.gson.annotations.SerializedName;
+
 public class Task {
     private String name;
     private String description;
-    private String image_url;
+    private String image_uri;
 
-    public Task(String name, String description, String image_url)
+    public Task(String name, String description, String image_uri)
     {
         this.name = name;
         this.description = description;
-        this.image_url = image_url;
+        this.image_uri = image_uri;
     }
 
     public String get_name()
@@ -20,9 +24,9 @@ public class Task {
     {
         return this.description;
     }
-    public String get_image_url()
+    public String get_image_uri()
     {
-        return this.image_url;
+        return this.image_uri;
     }
 
     public void set_name(String name)
@@ -33,8 +37,8 @@ public class Task {
     {
         this.description = description;
     }
-    public void set_image_url(String image_url)
+    public void set_image_uri(String image_url)
     {
-        this.image_url = image_url;
+        this.image_uri = image_url;
     }
 }

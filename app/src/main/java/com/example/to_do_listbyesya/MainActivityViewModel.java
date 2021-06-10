@@ -1,5 +1,10 @@
 package com.example.to_do_listbyesya;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -29,7 +34,6 @@ public class MainActivityViewModel extends ViewModel {
     {
         tasks.add(task);
     }
-
     public void add_task(int position, Task task)
     {
         tasks.add(position, task);
@@ -38,6 +42,11 @@ public class MainActivityViewModel extends ViewModel {
     public List<Task> get_all_tasks()
     {
         return tasks;
+    }
+
+    public void set_all_tasks(List<Task> tasks)
+    {
+        this.tasks = tasks;
     }
 
 //    public MutableLiveData<Task> get_task()
@@ -49,5 +58,6 @@ public class MainActivityViewModel extends ViewModel {
 //
 //        return task_liveData;
 //    }
+
 
 }

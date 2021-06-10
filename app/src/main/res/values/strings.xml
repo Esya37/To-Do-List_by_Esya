@@ -6,5 +6,6 @@
     <string name="enter_name">Введите название:</string>
     <string name="enter_description">Введите описание:</string>
     <string name="confirm">Подтвердить</string>
+    <string name="add_photo">Добавить фото:</string>
 
 </resources>

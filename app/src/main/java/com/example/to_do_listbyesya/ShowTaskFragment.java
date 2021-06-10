@@ -1,5 +1,6 @@
 package com.example.to_do_listbyesya;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -62,6 +64,7 @@ public class ShowTaskFragment extends Fragment {
     MainActivityViewModel model;
     TextView name_textView;
     TextView description_textView;
+    ImageView photo_imageView;
     View inflatedView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,6 +75,7 @@ public class ShowTaskFragment extends Fragment {
         inflatedView = inflater.inflate(R.layout.fragment_show_task, container, false);
         name_textView = inflatedView.findViewById(R.id.name_textView);
         description_textView = inflatedView.findViewById(R.id.description_textView);
+        photo_imageView = inflatedView.findViewById(R.id.photo_imageView);
 
         LiveData<Task> task_livedata = model.get_selected_task();
         task_livedata.observe(this.getViewLifecycleOwner(), new Observer<Task>() {
@@ -79,6 +83,7 @@ public class ShowTaskFragment extends Fragment {
             public void onChanged(Task task) {
                 name_textView.setText(task.get_name());
                 description_textView.setText((task.get_description()));
+                photo_imageView.setImageURI(Uri.parse(task.get_image_uri()));
             }
         });
 

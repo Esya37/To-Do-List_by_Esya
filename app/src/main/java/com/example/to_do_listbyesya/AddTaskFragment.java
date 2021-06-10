@@ -1,7 +1,16 @@
 package com.example.to_do_listbyesya;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
@@ -14,7 +23,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+import static android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,6 +83,9 @@ public class AddTaskFragment extends Fragment {
     EditText name_editText;
     EditText description_editText;
     View inflatedView;
+    ImageView imageView;
+    Uri imageUri = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,7 +102,13 @@ public class AddTaskFragment extends Fragment {
         confirm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Task new_task = new Task((String)name_editText.getText().toString(), (String)description_editText.getText().toString(), "");
+                Task new_task;
+                if(imageUri==null) {
+                    new_task = new Task((String) name_editText.getText().toString(), (String) description_editText.getText().toString(), "");
+                }
+                else{
+                    new_task = new Task((String) name_editText.getText().toString(), (String) description_editText.getText().toString(), (String) imageUri.toString());
+                }
                 model.add_task(new_task);
                 //NavHostFragment.findNavController(AddTaskFragment.this).navigate(R.id.tasksListFragment);
                 FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -91,7 +116,35 @@ public class AddTaskFragment extends Fragment {
             }
         });
 
+        imageView = (ImageView) inflatedView.findViewById(R.id.imageView2);
+
+        ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            imageUri = data.getData();
+                            imageView.setImageURI(imageUri);
+                        }
+                    }
+                });
+
+        Button add_photo = (Button) inflatedView.findViewById(R.id.add_photo_button);
+        add_photo.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                someActivityResultLauncher.launch(photoPickerIntent);
+            }
+        });
+
+
         // Inflate the layout for this fragment
         return inflatedView;
     }
 }
+
