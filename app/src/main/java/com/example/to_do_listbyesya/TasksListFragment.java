@@ -80,7 +80,7 @@ public class TasksListFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                NavHostFragment.findNavController(TasksListFragment.this).navigate(R.id.addTaskFragment);
+                NavHostFragment.findNavController(TasksListFragment.this).navigate(R.id.action_tasksListFragment_to_addTaskFragment);
             }
         });
 
