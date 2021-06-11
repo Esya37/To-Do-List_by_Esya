@@ -1,5 +1,7 @@
 package com.example.to_do_listbyesya;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,6 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,12 +26,12 @@ import android.widget.TextView;
  */
 public class ShowTaskFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+
     private String mParam1;
     private String mParam2;
 
@@ -42,7 +47,7 @@ public class ShowTaskFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment ShowTaskFragment.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static ShowTaskFragment newInstance(String param1, String param2) {
         ShowTaskFragment fragment = new ShowTaskFragment();
         Bundle args = new Bundle();
@@ -84,6 +89,7 @@ public class ShowTaskFragment extends Fragment {
                 name_textView.setText(task.get_name());
                 description_textView.setText((task.get_description()));
                 photo_imageView.setImageURI(Uri.parse(task.get_image_uri()));
+
             }
         });
 

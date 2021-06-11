@@ -1,10 +1,17 @@
 package com.example.to_do_listbyesya;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -21,6 +28,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(MainActivity.this,new String[]{
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            },1);
+
+        }
+
         settings = getSharedPreferences("Tasks", MODE_PRIVATE);
         model = new ViewModelProvider(this).get(MainActivityViewModel.class);
         load_tasks();
@@ -51,4 +66,19 @@ public class MainActivity extends AppCompatActivity {
             model.set_all_tasks(tasks);
         }
     }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==1){
+            if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 }

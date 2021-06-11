@@ -1,7 +1,9 @@
 package com.example.to_do_listbyesya;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -18,6 +20,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +29,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -39,12 +45,12 @@ import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
  */
 public class AddTaskFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+
     private String mParam1;
     private String mParam2;
 
@@ -60,7 +66,7 @@ public class AddTaskFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment AddTaskFragment.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static AddTaskFragment newInstance(String param1, String param2) {
         AddTaskFragment fragment = new AddTaskFragment();
         Bundle args = new Bundle();
@@ -97,22 +103,28 @@ public class AddTaskFragment extends Fragment {
         name_editText.setText("");
         description_editText.setText("");
 
-        //TODO: Сделать проверку пустые поля или нет
+
         Button confirm_button = (Button) inflatedView.findViewById(R.id.confirm_button);
         confirm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Task new_task;
-                if(imageUri==null) {
-                    new_task = new Task((String) name_editText.getText().toString(), (String) description_editText.getText().toString(), "");
+                if( TextUtils.isEmpty((String)name_editText.getText().toString().trim()))
+                {
+                    Toast.makeText(getContext(), "Нельзя добавить задачу без названия", Toast.LENGTH_SHORT).show();
                 }
-                else{
-                    new_task = new Task((String) name_editText.getText().toString(), (String) description_editText.getText().toString(), (String) imageUri.toString());
+                else {
+                    Task new_task;
+                    if (imageUri == null) {
+                        new_task = new Task((String) name_editText.getText().toString(), (String) description_editText.getText().toString(), "");
+                    } else {
+                        //new_task = new Task((String) name_editText.getText().toString(), (String) description_editText.getText().toString(), (String) imageUri.toString());
+                        new_task = new Task((String) name_editText.getText().toString(), (String) description_editText.getText().toString(), getRealPathFromURI(getContext(), imageUri));
+                    }
+                    model.add_task(new_task);
+                    //NavHostFragment.findNavController(AddTaskFragment.this).navigate(R.id.tasksListFragment);
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    fm.popBackStack();
                 }
-                model.add_task(new_task);
-                //NavHostFragment.findNavController(AddTaskFragment.this).navigate(R.id.tasksListFragment);
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                fm.popBackStack();
             }
         });
 
@@ -145,6 +157,20 @@ public class AddTaskFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return inflatedView;
+    }
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 }
 
