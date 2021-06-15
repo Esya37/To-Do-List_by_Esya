@@ -1,10 +1,5 @@
 package com.example.to_do_listbyesya;
 
-import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -14,50 +9,43 @@ import java.util.List;
 public class MainActivityViewModel extends ViewModel {
 
     private List<Task> tasks = new ArrayList<>();
-    MutableLiveData<Task> task_liveData = new MutableLiveData<>();
+    MutableLiveData<Task> taskLiveData = new MutableLiveData<>();
+    SharedPreferencesSingleton sharedPreferencesSingleton = SharedPreferencesSingleton.getSharedPreferencesSingleton();
 
-    public void select_task(Task task)
-    {
-        task_liveData.setValue(task);
-    }
-    public void select_task(int position)
-    {
-        task_liveData.setValue(tasks.get(position));
+    public void selectTask(Task task) {
+        taskLiveData.setValue(task);
     }
 
-    public MutableLiveData<Task> get_selected_task()
-    {
-        return task_liveData;
+    public void selectTask(int position) {
+        taskLiveData.setValue(tasks.get(position));
     }
 
-    public void add_task(Task task)
-    {
+    public MutableLiveData<Task> getSelectedTask() {
+        return taskLiveData;
+    }
+
+    public void addTask(Task task) {
         tasks.add(task);
     }
-    public void add_task(int position, Task task)
-    {
+
+    public void addTask(int position, Task task) {
         tasks.add(position, task);
     }
 
-    public List<Task> get_all_tasks()
-    {
+    public List<Task> getAllTasks() {
         return tasks;
     }
 
-    public void set_all_tasks(List<Task> tasks)
-    {
+    public void setAllTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
 
-//    public MutableLiveData<Task> get_task()
-//    {
-//        task_liveData.setValue(new Task("Доделать To-Do-List", "Не, ну почему бы и не доделать, правда?)", ""));
-//        task_liveData.setValue(new Task("Протестировать описание", "Тестим описание", ""));
-//        task_liveData.setValue(new Task("Протестировать тестирование", "Тестим тестирование", ""));
-//        task_liveData.setValue(new Task("Протестировать очень супер длинное название задачи", "Тестим... дальше лень писать", ""));
-//
-//        return task_liveData;
-//    }
+    public void saveTasks() {
+        sharedPreferencesSingleton.saveTasks(getAllTasks());
+    }
 
+    public void loadTasks() {
+        setAllTasks(sharedPreferencesSingleton.loadTasks());
+    }
 
 }

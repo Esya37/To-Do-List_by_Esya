@@ -1,44 +1,37 @@
 package com.example.to_do_listbyesya;
 
-import android.net.Uri;
-
-import com.google.gson.annotations.SerializedName;
-
 public class Task {
     private String name;
     private String description;
-    private String image_uri;
+    private String imageUri;
 
-    public Task(String name, String description, String image_uri)
-    {
+    public Task(String name, String description, String imageUri) {
         this.name = name;
         this.description = description;
-        this.image_uri = image_uri;
+        this.imageUri = imageUri;
     }
 
-    public String get_name()
-    {
+    public String getName() {
         return this.name;
     }
-    public String get_description()
-    {
+
+    public String getDescription() {
         return this.description;
     }
-    public String get_image_uri()
-    {
-        return this.image_uri;
+
+    public String getImageUri() {
+        return this.imageUri;
     }
 
-    public void set_name(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
-    public void set_description(String description)
-    {
+
+    public void setDescription(String description) {
         this.description = description;
     }
-    public void set_image_uri(String image_url)
-    {
-        this.image_uri = image_url;
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
     }
 }

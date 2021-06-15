@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">To-Do-List by Esya</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_task">Добавить задачу</string>
     <string name="task_list">Список задач:</string>
     <string name="enter_name">Введите название:</string>

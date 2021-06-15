@@ -6,20 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
-{
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<Task> tasks;
     private LayoutInflater inflater;
-    private ItemClickListener click_listener;
+    private ItemClickListener clickListener;
 
-    public RecyclerViewAdapter(Context context, List<Task> list)
-    {
+    public RecyclerViewAdapter(Context context, List<Task> list) {
         this.tasks = list;
         this.inflater = LayoutInflater.from(context);
     }
@@ -33,7 +30,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
         Task task = tasks.get(position);
-        holder.nameView.setText(task.get_name());
+        holder.nameView.setText(task.getName());
     }
 
     @Override
@@ -41,50 +38,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return tasks.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nameView;
-        ViewHolder(View view){
+
+        ViewHolder(View view) {
             super(view);
-            nameView = (TextView) view.findViewById(R.id.name_text_view);
+            nameView = view.findViewById(R.id.nameTextView);
             view.setOnClickListener(this);
         }
+
         @Override
         public void onClick(View view) {
-            if (click_listener != null) {
-                click_listener.onItemClick(view, getAdapterPosition());
+            if (clickListener != null) {
+                clickListener.onItemClick(view, getAdapterPosition());
             }
         }
     }
 
-    public static class SpacesItemDecoration extends RecyclerView.ItemDecoration
-    {
-        private int space;
-
-        public SpacesItemDecoration(int space)
-        {
-            this.space = space;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state)
-        {
-            //добавить переданное кол-во пикселей отступа снизу
-            outRect.top = space;
-            outRect.left = space;
-            outRect.right = space;
-        }
-    }
-
     public String getItem(int id) {
-        return tasks.get(id).get_name();
+        return tasks.get(id).getName();
     }
 
-    // allows clicks events to be caught
     void setClickListener(ItemClickListener itemClickListener) {
-        this.click_listener = itemClickListener;
+        this.clickListener = itemClickListener;
     }
 
-    // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }

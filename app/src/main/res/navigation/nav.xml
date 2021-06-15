@@ -8,7 +8,7 @@
         android:id="@+id/addTaskFragment"
         android:name="com.example.to_do_listbyesya.AddTaskFragment"
         android:label="fragment_add_task"
-        tools:layout="@layout/fragment_add_task" />
+        tools:layout="@layout/fragmentAddTask" />
     <fragment
         android:id="@+id/showTaskFragment"
         android:name="com.example.to_do_listbyesya.ShowTaskFragment"

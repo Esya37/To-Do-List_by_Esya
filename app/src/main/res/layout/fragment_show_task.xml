@@ -14,7 +14,7 @@
         tools:context=".ShowTaskFragment">
 
         <TextView
-            android:id="@+id/name_textView"
+            android:id="@+id/nameShowTaskFragmentTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -27,10 +27,10 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/photo_imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/photoShowTaskFragmentImageView" />
 
         <TextView
-            android:id="@+id/description_textView"
+            android:id="@+id/descriptionShowTaskFragmentTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -42,10 +42,10 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name_textView" />
+            app:layout_constraintTop_toBottomOf="@+id/nameShowTaskFragmentTextView" />
 
         <ImageView
-            android:id="@+id/photo_imageView"
+            android:id="@+id/photoShowTaskFragmentImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
