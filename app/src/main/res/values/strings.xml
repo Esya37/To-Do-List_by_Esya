@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">To-Do-List by Esya</string>
     <string name="add_task">Добавить задачу</string>
+    <string name="change_task">Изменить задачу</string>
     <string name="task_list">Список задач:</string>
     <string name="enter_name">Введите название:</string>
     <string name="enter_description">Введите описание:</string>

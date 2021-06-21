@@ -67,4 +67,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         void onItemClick(View view, int position);
     }
 
+    public static class SpacesItemDecoration extends RecyclerView.ItemDecoration
+    {
+        public SpacesItemDecoration() {}
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state)
+        {
+            //добавить переданное кол-во пикселей отступа снизу
+            outRect.top = 10;
+            outRect.left = 20;
+            outRect.right = 20;
+            outRect.bottom = 10;
+        }
+    }
+
 }

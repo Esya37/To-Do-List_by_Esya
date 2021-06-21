@@ -13,6 +13,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class SharedPreferencesSingleton {
     private static SharedPreferencesSingleton sharedPreferencesSingleton;
+    private Gson gson = new Gson();
     SharedPreferences settings;
 
     private SharedPreferencesSingleton() {
@@ -29,7 +30,7 @@ public class SharedPreferencesSingleton {
 
     public void saveTasks(List<Task> tasks) {
         settings = MainActivity.getMainActivityContext().getSharedPreferences("Tasks", MODE_PRIVATE);
-        String tasksString = new Gson().toJson(tasks);
+        String tasksString = gson.toJson(tasks);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("Tasks", tasksString);
         editor.apply();
@@ -41,7 +42,7 @@ public class SharedPreferencesSingleton {
         if (tasksString != null) {
             Type type = new TypeToken<List<Task>>() {
             }.getType();
-            List<Task> tasks = new Gson().fromJson(tasksString, type);
+            List<Task> tasks = gson.fromJson(tasksString, type);
             return tasks;
         }
         return new ArrayList<Task>();

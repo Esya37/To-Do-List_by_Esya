@@ -48,4 +48,12 @@ public class MainActivityViewModel extends ViewModel {
         setAllTasks(sharedPreferencesSingleton.loadTasks());
     }
 
+    public void editTask(int position, Task newTask){
+        tasks.remove(position);
+        addTask(position, newTask);
+    }
+    public void deleteTask(int position){
+        tasks.remove(position);
+    }
+
 }
